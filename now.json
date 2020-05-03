@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "name": "api-proyecto-titulo-serverless",
+    "routes": [{
+        "src": "/api/(.*)",
+        "dest": "/api/index.js"
+    }],
+    "env": {
+        "MONGODB_URI_PROYECTO_TITULO": "@mongodb-uri-proyecto-titulo"
+    }
+}
