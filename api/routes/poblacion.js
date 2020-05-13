@@ -1,5 +1,11 @@
 const express = require('express');
 
+const {
+  verificaToken,
+  verificaAdminRole,
+  verificaVipRole,
+} = require('../middlewares/autenticacion');
+
 let app = express();
 let Poblacion = require('../models/Poblacion');
 
@@ -9,7 +15,7 @@ let Poblacion = require('../models/Poblacion');
  * ==============================
  */
 
-app.get('/', (req, res) => {
+app.get('/', verificaToken, (req, res) => {
   Poblacion.find({})
     .sort('name_poblacion')
     .populate('comuna', 'name_comuna')
@@ -34,7 +40,7 @@ app.get('/', (req, res) => {
  * =============================
  */
 
-app.get('/:id', (req, res) => {
+app.get('/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Poblacion.findById(id, (err, poblacionDB) => {
@@ -67,7 +73,7 @@ app.get('/:id', (req, res) => {
  * ==========================
  */
 
-app.post('/', (req, res) => {
+app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let poblacion = new Poblacion({
@@ -103,7 +109,7 @@ app.post('/', (req, res) => {
  * ==============================
  */
 
-app.put('/:id', (req, res) => {
+app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -146,7 +152,7 @@ app.put('/:id', (req, res) => {
  * ==============================
  */
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Poblacion.findByIdAndRemove(id, (err, poblacionDB) => {

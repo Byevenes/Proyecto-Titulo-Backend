@@ -2,9 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const region = require('.//routes/region');
-const comuna = require('.//routes/comuna');
-const poblacion = require('.//routes/poblacion');
+const comentario = require('./routes/comentario');
+const comuna = require('./routes/comuna');
+const login = require('./routes/login');
+const poblacion = require('./routes/poblacion');
+const region = require('./routes/region');
+const usuario = require('./routes/usuario');
 
 const app = express();
 
@@ -42,8 +45,11 @@ mongoose.connect(
  * Middleware de las routes requeridas
  */
 
-app.use('/api/region', region);
+app.use('/api/comentario', comentario);
 app.use('/api/comuna', comuna);
+app.use('/api/login', login);
 app.use('/api/poblacion', poblacion);
+app.use('/api/region', region);
+app.use('/api/usuario', usuario);
 
 module.exports = app;

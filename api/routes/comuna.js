@@ -1,5 +1,11 @@
 const express = require('express');
 
+const {
+  verificaToken,
+  verificaAdminRole,
+  verificaVipRole,
+} = require('../middlewares/autenticacion');
+
 let app = express();
 let Comuna = require('../models/Comuna');
 
@@ -9,7 +15,7 @@ let Comuna = require('../models/Comuna');
  * ==========================
  */
 
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
   Comuna.find({})
     .sort('name_comuna')
     .populate('region', 'name_region')
@@ -34,7 +40,7 @@ app.get('/', (req, res) => {
  * ==========================
  */
 
-app.get('/:id', (req, res) => {
+app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Comuna.findById(id, (err, comunaDB) => {
@@ -67,7 +73,7 @@ app.get('/:id', (req, res) => {
  * ==========================
  */
 
-app.post('/', (req, res) => {
+app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let comuna = new Comuna({
@@ -103,7 +109,7 @@ app.post('/', (req, res) => {
  * ============================
  */
 
-app.put('/:id', (req, res) => {
+app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -146,7 +152,7 @@ app.put('/:id', (req, res) => {
  * ============================
  */
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Comuna.findByIdAndRemove(id, (err, comunaDB) => {

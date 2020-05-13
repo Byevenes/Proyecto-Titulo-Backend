@@ -1,5 +1,11 @@
 const express = require('express');
 
+const {
+  verificaToken,
+  verificaAdminRole,
+  verificaVipRole,
+} = require('../middlewares/autenticacion');
+
 let app = express();
 let Region = require('../models/Region');
 
@@ -9,7 +15,7 @@ let Region = require('../models/Region');
  * ==========================
  */
 
-app.get('/', (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
   Region.find({})
     .sort('name_region')
     .exec((err, regiones) => {
@@ -33,7 +39,7 @@ app.get('/', (req, res) => {
  * ==========================
  */
 
-app.get('/:id', (req, res) => {
+app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Region.findById(id, (err, regionDB) => {
@@ -66,7 +72,7 @@ app.get('/:id', (req, res) => {
  * ==========================
  */
 
-app.post('/', (req, res) => {
+app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let region = new Region({
@@ -101,7 +107,7 @@ app.post('/', (req, res) => {
  * ============================
  */
 
-app.put('/:id', (req, res) => {
+app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -144,7 +150,7 @@ app.put('/:id', (req, res) => {
  * ============================
  */
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Region.findByIdAndRemove(id, (err, regionDB) => {
