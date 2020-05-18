@@ -3,7 +3,7 @@ const express = require('express');
 const {
   verificaToken,
   verificaAdminRole,
-  verificaVipRole,
+  verificaChoferRole,
 } = require('../middlewares/autenticacion');
 
 let app = express();

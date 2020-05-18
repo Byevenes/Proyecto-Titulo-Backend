@@ -1,16 +1,15 @@
 const express = require('express');
-
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 
-const Usuario = require('../models/Usuario');
 const {
   verificaToken,
   verificaAdminRole,
-  verificaVipRole,
+  verificaChoferRole,
 } = require('../middlewares/autenticacion');
 
 const app = express();
+const Usuario = require('../models/Usuario');
 
 /**
  * ============================
@@ -20,7 +19,7 @@ const app = express();
  * ============================
  */
 
-app.get('/', verificaToken, (req, res) => {
+app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
@@ -96,7 +95,7 @@ app.post('/', (req, res) => {
     nombre: body.nombre,
     email: body.email,
     password: bcrypt.hashSync(body.password, 10),
-    //role: body.role    en consideración todavia
+    role: body.role, // en consideración todavia si no colocarlo
   });
 
   usuario.save((err, usuarioDB) => {

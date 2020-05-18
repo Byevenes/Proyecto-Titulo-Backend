@@ -20,7 +20,7 @@ let verificaToken = (req, res, next) => {
       return res.status(401).json({
         ok: false,
         err: {
-          message: 'Token no válido',
+          message: 'Token no Válido',
         },
       });
     }
@@ -48,7 +48,7 @@ let verificaAdminRole = (req, res, next) => {
     res.json({
       ok: false,
       err: {
-        message: 'El usuario no es administrador',
+        message: 'El usuario no es Administrador',
       },
     });
   }
@@ -63,16 +63,16 @@ let verificaAdminRole = (req, res, next) => {
  * @param {*} next
  */
 
-let verificaVipRole = (req, res, next) => {
+let verificaChoferRole = (req, res, next) => {
   let usuario = req.usuario;
 
-  if (usuario.role === 'VIP_ROLE') {
+  if (usuario.role === 'CHOFER_ROLE') {
     next();
   } else {
     res.json({
       ok: false,
       err: {
-        message: 'El usuario no es vip',
+        message: 'El usuario no es un Chofer',
       },
     });
   }
@@ -81,5 +81,5 @@ let verificaVipRole = (req, res, next) => {
 module.exports = {
   verificaToken,
   verificaAdminRole,
-  verificaVipRole,
+  verificaChoferRole,
 };

@@ -6,6 +6,7 @@ const comentario = require('./routes/comentario');
 const comuna = require('./routes/comuna');
 const login = require('./routes/login');
 const poblacion = require('./routes/poblacion');
+const puntoChofer = require('./routes/puntoChofer');
 const region = require('./routes/region');
 const usuario = require('./routes/usuario');
 
@@ -49,6 +50,7 @@ app.use('/api/comentario', comentario);
 app.use('/api/comuna', comuna);
 app.use('/api/login', login);
 app.use('/api/poblacion', poblacion);
+app.use('/api/puntochofer', puntoChofer);
 app.use('/api/region', region);
 app.use('/api/usuario', usuario);
 

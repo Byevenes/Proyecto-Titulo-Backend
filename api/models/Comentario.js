@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const moment = require('moment');
 
-let now = moment.locale('es');
 let Schema = mongoose.Schema;
 
 /**

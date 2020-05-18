@@ -1,14 +1,14 @@
 const express = require('express');
 const moment = require('moment');
 
-let app = express();
-let Comentario = require('../models/Comentario');
-
 const {
   verificaToken,
   verificaAdminRole,
-  verificaVipRole,
+  verificaChoferRole,
 } = require('../middlewares/autenticacion');
+
+let app = express();
+let Comentario = require('../models/Comentario');
 
 /**
  * ==============================
