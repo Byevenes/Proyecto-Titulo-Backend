@@ -96,6 +96,7 @@ app.get(
     let id = req.params.id;
 
     PuntoChofer.find({ chofer: id })
+      .sort({ date_chofer: 'desc' })
       .populate('chofer', 'nombre, email, role')
       .exec((err, puntoChoferDB) => {
         if (err) {

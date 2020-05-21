@@ -23,6 +23,11 @@ let comentarioSchema = new Schema({
     ref: 'Usuario',
     required: [true, 'El creador del comentario es necesario'],
   },
+  recorrido: {
+    type: Schema.Types.ObjectId,
+    ref: 'Recorrido',
+    required: [true, 'El recorrido es necesario'],
+  },
   date_comentario: {
     type: String,
     default: () => moment().format('DD-MM-YYYY, h:mm:ss a'),

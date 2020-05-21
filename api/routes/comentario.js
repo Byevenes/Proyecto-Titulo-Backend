@@ -18,8 +18,9 @@ let Comentario = require('../models/Comentario');
 
 app.get('/', verificaToken, (req, res) => {
   Comentario.find({})
-    .sort('description_comentario')
+    .sort({ date_comentario: 'desc' })
     .populate('creator', 'email')
+    .populate('recorrido', 'name_recorrido')
     .exec((err, comentarios) => {
       if (err) {
         return res.status(500).json({
@@ -79,6 +80,7 @@ app.get('/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Comentario.find({ creator: id })
+    .sort({ date_comentario: 'desc' })
     .populate('creator', 'email')
     .exec((err, comentarioDB) => {
       if (err) {
@@ -108,6 +110,50 @@ app.get('/:id', verificaToken, (req, res) => {
 });
 
 /**
+ * ============================================
+ * Obtener comentarios por ID del recorrido
+ * tambien sabiendo la cantidad de comentarios
+ * ============================================
+ */
+
+app.get('/comentariorecorridoid/:id', verificaToken, (req, res) => {
+  let id = req.params.id;
+
+  Comentario.find({ recorrido: id })
+    .sort({ date_comentario: 'desc' })
+    .populate(
+      'recorrido',
+      'name_recorrido descripcion_recorrido estado_recorrido date_recorrido_iniciado date_recorrido_finalizado'
+    )
+    .populate('poblacion', 'name_poblacion')
+    .exec((err, comentarioDB) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err,
+        });
+      }
+
+      if (!comentarioDB) {
+        return res.status(400).json({
+          ok: false,
+          err: {
+            message: 'El ID del recorrido no existe',
+          },
+        });
+      }
+
+      Comentario.countDocuments((err, conteo) => {
+        res.json({
+          ok: true,
+          comentario: comentarioDB,
+          cuantos: conteo,
+        });
+      });
+    });
+});
+
+/**
  * ==========================
  * Crear nuevo comentario
  * ==========================
@@ -119,6 +165,7 @@ app.post('/', verificaToken, (req, res) => {
   let comentario = new Comentario({
     description_comentario: body.description_comentario,
     creator: body.creator,
+    recorrido: body.recorrido,
   });
 
   comentario.save((err, comentarioDB) => {
