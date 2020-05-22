@@ -6,6 +6,14 @@ moment.locale('es');
 
 let Schema = mongoose.Schema;
 
+/**
+ * Modelo del poligono de puntos para la utilización del modelo del recorridoSchema
+ *
+ * En este modelo se piden 2 cosas
+ * 1.- Un valor por default Polygon para señalar de que tipo de String es.
+ * 2.- la coordinates que sera un triple array de numeros para tener un conjunto de puntos.
+ */
+
 let polygonSchema = new Schema({
   type: {
     type: String,
@@ -16,6 +24,19 @@ let polygonSchema = new Schema({
     required: true,
   },
 });
+
+/**
+ * Modelo recorridoSchema para la utilización de marcacar un polygono de puntos con respecto al recorrido
+ *
+ * En este modelo se pieden 7 cosas
+ * 1.- La población que estara asociado el recorrido la cual es necesaria.
+ * 2.- El nombre que tendra el recorrido tambien es requerido.
+ * 3.- La descripción del recorrido de igual manera requerido.
+ * 4.- El estado del recorrido que por default sera true, si este se encuentra operativo o no.
+ * 5.- La localización de los puntos del polygono que sera requeridos.
+ * 6.- La fecha de inicio del recorrido que sera necesaria.
+ * 7.- La fecha de termino del recorrido que tambien sera obligatoria.
+ */
 
 let recoridoSchema = new Schema({
   poblacion: {
@@ -42,10 +63,12 @@ let recoridoSchema = new Schema({
   date_recorrido_iniciado: {
     type: String,
     default: () => moment().format('dddd, h:mm:ss a'),
+    required: [true, 'El horario de inicio es necesario'],
   },
   date_recorrido_finalizado: {
     type: String,
     default: () => moment().format('dddd, h:mm:ss a'),
+    required: [true, 'El horario de termino es necesario'],
   },
 });
 
