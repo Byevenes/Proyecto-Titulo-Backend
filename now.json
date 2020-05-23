@@ -6,6 +6,7 @@
         "dest": "/api/index.js"
     }],
     "env": {
-        "MONGODB_URI_PROYECTO_TITULO": "@mongodb-uri-proyecto-titulo"
+        "MONGODB_URI_PROYECTO_TITULO": "@mongodb-uri-proyecto-titulo",
+        "SEEDD": "@seedd"
     }
 }
