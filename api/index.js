@@ -24,7 +24,7 @@ app.use(cors());
 
 // Conección a la base de datos de MONGODB
 mongoose.connect(
-  process.env.MONGODB_URI_PROYECTO_TITULO,
+  'mongodb+srv://proyecto-titulo-master:lmVsQNqxETopHeEy@proyecto-titulo-db-knppy.mongodb.net/test?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -37,6 +37,10 @@ mongoose.connect(
     console.log('Base de datos ONLINE');
   }
 );
+
+app.listen(3001, () => {
+  console.log(`escuachando en puerto ${3001}`);
+});
 
 /**
  * Middleware de las routes requeridas
