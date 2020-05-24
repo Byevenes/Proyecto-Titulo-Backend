@@ -11,3 +11,14 @@
 //  SEED de autenticación
 // ============================
 process.env.SEEDD = process.env.SEEDD || 'seed-de-desarrollo';
+
+// ============================
+//  Puerto
+// ============================
+process.env.PORT = process.env.PORT || 3001;
+
+// ============================
+//  Base de datos
+// ============================
+process.env.MONGODB_URI_PROYECTO_TITULO =
+  'mongodb+srv://proyecto-titulo-master:lmVsQNqxETopHeEy@proyecto-titulo-db-knppy.mongodb.net/test?retryWrites=true&w=majority';

@@ -1,3 +1,5 @@
+require('./config/config');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -42,6 +44,10 @@ mongoose.connect(
     console.log('Base de datos ONLINE');
   }
 );
+
+app.listen(process.env.PORT, () => {
+  console.log(`escuachando en puerto ${process.env.PORT}`);
+});
 
 /**
  * Middleware de las routes requeridas
