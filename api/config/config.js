@@ -20,5 +20,4 @@ process.env.PORT = process.env.PORT || 3001;
 // ============================
 //  Base de Datos .env
 // ============================
-process.env.MONGODB_URI_PROYECTO_TITULO =
-  process.env.MONGODB_URI_PROYECTO_TITULO;
+process.env.MONGODB_URI_PROYECTO_TITULO;
