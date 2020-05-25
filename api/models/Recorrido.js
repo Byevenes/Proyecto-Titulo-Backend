@@ -53,8 +53,10 @@ let pointSchema = new Schema({
  * 3.- La descripción del recorrido de igual manera requerido.
  * 4.- El estado del recorrido que por default sera true, si este se encuentra operativo o no.
  * 5.- La localización de los puntos del polygono que sera requeridos.
- * 6.- La fecha de inicio del recorrido que sera necesaria.
- * 7.- La fecha de termino del recorrido que tambien sera obligatoria.
+ * 6.- La locaclización del punto de entrada que puede ser 1 o mas de una entrada al recorrido
+ * 7.- La locaclización del punto de salida que puede ser 1 o mas de una salida al recorrido
+ * 8.- La fecha de inicio del recorrido que sera necesaria.
+ * 9.- La fecha de termino del recorrido que tambien sera obligatoria.
  */
 
 let recoridoSchema = new Schema({
