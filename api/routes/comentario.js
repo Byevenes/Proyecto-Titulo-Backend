@@ -16,7 +16,7 @@ let Comentario = require('../models/Comentario');
  * ==============================
  */
 
-app.get('/', verificaToken, (req, res) => {
+app.get('/api/comentario', verificaToken, (req, res) => {
   Comentario.find({})
     .sort({ date_comentario: 'desc' })
     .populate('creator', 'email')
@@ -42,7 +42,7 @@ app.get('/', verificaToken, (req, res) => {
  * ==============================
  */
 
-app.get('/comentarioid/:id', verificaToken, (req, res) => {
+app.get('/api/comentario/comentarioid/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Comentario.findById(id, (err, comentarioDB) => {
@@ -76,7 +76,7 @@ app.get('/comentarioid/:id', verificaToken, (req, res) => {
  * ============================================
  */
 
-app.get('/:id', verificaToken, (req, res) => {
+app.get('/api/comentario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Comentario.find({ creator: id })
@@ -116,42 +116,46 @@ app.get('/:id', verificaToken, (req, res) => {
  * ============================================
  */
 
-app.get('/comentariorecorridoid/:id', verificaToken, (req, res) => {
-  let id = req.params.id;
+app.get(
+  '/api/comentario/comentariorecorridoid/:id',
+  verificaToken,
+  (req, res) => {
+    let id = req.params.id;
 
-  Comentario.find({ recorrido: id })
-    .sort({ date_comentario: 'desc' })
-    .populate(
-      'recorrido',
-      'name_recorrido descripcion_recorrido estado_recorrido date_recorrido_iniciado date_recorrido_finalizado'
-    )
-    .populate('poblacion', 'name_poblacion')
-    .exec((err, comentarioDB) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          err,
-        });
-      }
+    Comentario.find({ recorrido: id })
+      .sort({ date_comentario: 'desc' })
+      .populate(
+        'recorrido',
+        'name_recorrido descripcion_recorrido estado_recorrido date_recorrido_iniciado date_recorrido_finalizado'
+      )
+      .populate('poblacion', 'name_poblacion')
+      .exec((err, comentarioDB) => {
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            err,
+          });
+        }
 
-      if (!comentarioDB) {
-        return res.status(400).json({
-          ok: false,
-          err: {
-            message: 'El ID del recorrido no existe',
-          },
-        });
-      }
+        if (!comentarioDB) {
+          return res.status(400).json({
+            ok: false,
+            err: {
+              message: 'El ID del recorrido no existe',
+            },
+          });
+        }
 
-      Comentario.countDocuments((err, conteo) => {
-        res.json({
-          ok: true,
-          comentario: comentarioDB,
-          cuantos: conteo,
+        Comentario.countDocuments((err, conteo) => {
+          res.json({
+            ok: true,
+            comentario: comentarioDB,
+            cuantos: conteo,
+          });
         });
       });
-    });
-});
+  }
+);
 
 /**
  * ==========================
@@ -159,7 +163,7 @@ app.get('/comentariorecorridoid/:id', verificaToken, (req, res) => {
  * ==========================
  */
 
-app.post('/', verificaToken, (req, res) => {
+app.post('/api/comentario', verificaToken, (req, res) => {
   let body = req.body;
 
   let comentario = new Comentario({
@@ -196,7 +200,7 @@ app.post('/', verificaToken, (req, res) => {
  * ==============================
  */
 
-app.put('/:id', verificaToken, (req, res) => {
+app.put('/api/comentario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -240,7 +244,7 @@ app.put('/:id', verificaToken, (req, res) => {
  * ==============================
  */
 
-app.delete('/:id', verificaToken, (req, res) => {
+app.delete('/api/comentario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Comentario.findByIdAndRemove(id, (err, comentarioDB) => {

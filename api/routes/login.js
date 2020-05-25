@@ -1,3 +1,5 @@
+require('../config/config');
+
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -15,7 +17,7 @@ const app = express();
  * =====================================
  */
 
-app.post('/', (req, res) => {
+app.post('/api/login', (req, res) => {
   let body = req.body;
 
   Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
@@ -49,7 +51,7 @@ app.post('/', (req, res) => {
         usuario: usuarioDB,
       },
       process.env.SEEDD,
-      { expiresIn: 60 * 60 * 24 * 365 }
+      { expiresIn: process.env.CADUCIDAD_TOKEN }
     );
 
     res.json({

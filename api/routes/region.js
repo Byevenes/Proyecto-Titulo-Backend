@@ -15,7 +15,7 @@ let Region = require('../models/Region');
  * ==========================
  */
 
-app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/region', [verificaToken, verificaAdminRole], (req, res) => {
   Region.find({})
     .sort('name_region')
     .exec((err, regiones) => {
@@ -39,7 +39,7 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ==========================
  */
 
-app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/region/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Region.findById(id, (err, regionDB) => {
@@ -72,7 +72,7 @@ app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  * ==========================
  */
 
-app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.post('/api/region', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let region = new Region({
@@ -107,7 +107,7 @@ app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ============================
  */
 
-app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
+app.put('/api/region/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -150,31 +150,35 @@ app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  * ============================
  */
 
-app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
+app.delete(
+  '/api/region/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
 
-  Region.findByIdAndRemove(id, (err, regionDB) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        err,
+    Region.findByIdAndRemove(id, (err, regionDB) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err,
+        });
+      }
+
+      if (!regionDB) {
+        return res.status(400).json({
+          ok: false,
+          err: {
+            message: 'El ID de la región no existe',
+          },
+        });
+      }
+
+      res.json({
+        ok: true,
+        message: 'Región Borrada',
       });
-    }
-
-    if (!regionDB) {
-      return res.status(400).json({
-        ok: false,
-        err: {
-          message: 'El ID de la región no existe',
-        },
-      });
-    }
-
-    res.json({
-      ok: true,
-      message: 'Región Borrada',
     });
-  });
-});
+  }
+);
 
 module.exports = app;

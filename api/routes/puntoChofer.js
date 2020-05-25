@@ -5,6 +5,7 @@ const {
   verificaToken,
   verificaAdminRole,
   verificaChoferRole,
+  verificaAdminOrChoferRole,
 } = require('../middlewares/autenticacion');
 
 let app = express();
@@ -16,7 +17,7 @@ let PuntoChofer = require('../models/PuntoChofer');
  * =========================================
  */
 
-app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/puntochofer', [verificaToken, verificaAdminRole], (req, res) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
@@ -52,7 +53,7 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
  */
 
 app.get(
-  '/puntochoferid/:id',
+  '/api/puntochofer/puntochoferid/:id',
   [verificaToken, verificaAdminRole],
   (req, res) => {
     let id = req.params.id;
@@ -90,8 +91,8 @@ app.get(
  */
 
 app.get(
-  '/:id',
-  [verificaToken, verificaChoferRole && verificaAdminRole],
+  '/api/puntochofer/:id',
+  [verificaToken, verificaAdminOrChoferRole],
   (req, res) => {
     let id = req.params.id;
 
@@ -133,8 +134,8 @@ app.get(
  */
 
 app.post(
-  '/',
-  [verificaToken, verificaChoferRole && verificaAdminRole],
+  '/api/puntochofer',
+  [verificaToken, verificaAdminOrChoferRole],
   (req, res) => {
     let body = req.body;
 
@@ -173,8 +174,8 @@ app.post(
  */
 
 app.put(
-  '/:id',
-  [verificaToken, verificaChoferRole && verificaAdminRole],
+  '/api/puntochofer/:id',
+  [verificaToken, verificaAdminOrChoferRole],
   (req, res) => {
     let id = req.params.id;
     let body = req.body;
@@ -220,31 +221,35 @@ app.put(
  * ==========================
  */
 
-app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
+app.delete(
+  '/api/puntochofer/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
 
-  PuntoChofer.findByIdAndRemove(id, (err, puntoChoferDB) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        err,
+    PuntoChofer.findByIdAndRemove(id, (err, puntoChoferDB) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err,
+        });
+      }
+
+      if (!puntoChoferDB) {
+        return res.status(400).json({
+          ok: false,
+          err: {
+            message: 'El ID del punto no existe',
+          },
+        });
+      }
+
+      res.json({
+        ok: true,
+        message: 'Punto de Chofer Borrado',
       });
-    }
-
-    if (!puntoChoferDB) {
-      return res.status(400).json({
-        ok: false,
-        err: {
-          message: 'El ID del punto no existe',
-        },
-      });
-    }
-
-    res.json({
-      ok: true,
-      message: 'Punto de Chofer Borrado',
     });
-  });
-});
+  }
+);
 
 module.exports = app;

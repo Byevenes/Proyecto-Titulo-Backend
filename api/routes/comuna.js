@@ -15,7 +15,7 @@ let Comuna = require('../models/Comuna');
  * ==========================
  */
 
-app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/comuna', [verificaToken, verificaAdminRole], (req, res) => {
   Comuna.find({})
     .sort('name_comuna')
     .populate('region', 'name_region')
@@ -40,7 +40,7 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ==========================
  */
 
-app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/comuna/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
 
   Comuna.findById(id, (err, comunaDB) => {
@@ -73,7 +73,7 @@ app.get('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  * ==========================
  */
 
-app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.post('/api/comuna', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let comuna = new Comuna({
@@ -109,7 +109,7 @@ app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ============================
  */
 
-app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
+app.put('/api/comuna/:id', [verificaToken, verificaAdminRole], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -152,31 +152,35 @@ app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  * ============================
  */
 
-app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
+app.delete(
+  '/api/comuna/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
 
-  Comuna.findByIdAndRemove(id, (err, comunaDB) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        err,
+    Comuna.findByIdAndRemove(id, (err, comunaDB) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err,
+        });
+      }
+
+      if (!comunaDB) {
+        return res.status(400).json({
+          ok: false,
+          err: {
+            message: 'El ID de la comuna no existe',
+          },
+        });
+      }
+
+      res.json({
+        ok: true,
+        message: 'Comuna Borrada',
       });
-    }
-
-    if (!comunaDB) {
-      return res.status(400).json({
-        ok: false,
-        err: {
-          message: 'El ID de la comuna no existe',
-        },
-      });
-    }
-
-    res.json({
-      ok: true,
-      message: 'Comuna Borrada',
     });
-  });
-});
+  }
+);
 
 module.exports = app;

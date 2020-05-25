@@ -17,7 +17,7 @@ let Recorrido = require('../models/Recorrido');
  * ==============================
  */
 
-app.get('/', verificaToken, (req, res) => {
+app.get('/api/recorrido', verificaToken, (req, res) => {
   Recorrido.find({})
     .sort('name_recorrido')
     .populate('poblacion', 'name_poblacion')
@@ -44,7 +44,7 @@ app.get('/', verificaToken, (req, res) => {
  * ==============================
  */
 
-app.get('/recorridoid/:id', verificaToken, (req, res) => {
+app.get('/api/recorrido/recorridoid/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Recorrido.findById(id, (err, recorridoDB) => {
@@ -78,7 +78,7 @@ app.get('/recorridoid/:id', verificaToken, (req, res) => {
  * ============================================
  */
 
-app.get('/:id', verificaToken, (req, res) => {
+app.get('/api/recorrido/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Recorrido.find({ poblacion: id })
@@ -117,7 +117,7 @@ app.get('/:id', verificaToken, (req, res) => {
  * ==========================
  */
 
-app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.post('/api/recorrido', [verificaToken, verificaAdminRole], (req, res) => {
   let body = req.body;
 
   let recorrido = new Recorrido({
@@ -158,45 +158,49 @@ app.post('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ==============================
  */
 
-app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
-  let body = _.pick(req.body, [
-    'name_recorrido',
-    'descripcion_recorrido',
-    'estado_recorrido',
-    'location_recorrido',
-    'date_recorrido_iniciado',
-    'date_recorrido_finalizado',
-  ]);
+app.put(
+  '/api/recorrido/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
+    let body = _.pick(req.body, [
+      'name_recorrido',
+      'descripcion_recorrido',
+      'estado_recorrido',
+      'location_recorrido',
+      'date_recorrido_iniciado',
+      'date_recorrido_finalizado',
+    ]);
 
-  Recorrido.findByIdAndUpdate(
-    id,
-    body,
-    { new: true, runValidators: true },
-    (err, recorridoDB) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          err,
+    Recorrido.findByIdAndUpdate(
+      id,
+      body,
+      { new: true, runValidators: true },
+      (err, recorridoDB) => {
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            err,
+          });
+        }
+
+        if (!recorridoDB) {
+          return res.status(400).json({
+            ok: false,
+            err: {
+              message: 'El ID del recorrido no existe',
+            },
+          });
+        }
+
+        res.json({
+          ok: true,
+          recorrido: recorridoDB,
         });
       }
-
-      if (!recorridoDB) {
-        return res.status(400).json({
-          ok: false,
-          err: {
-            message: 'El ID del recorrido no existe',
-          },
-        });
-      }
-
-      res.json({
-        ok: true,
-        recorrido: recorridoDB,
-      });
-    }
-  );
-});
+    );
+  }
+);
 
 /**
  * ================================================
@@ -207,40 +211,44 @@ app.put('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  * ================================================
  */
 
-app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
-  let cambioEstadoRecorrido = {
-    estado_recorrido: false,
-  };
+app.delete(
+  '/api/recorrido/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
+    let cambioEstadoRecorrido = {
+      estado_recorrido: false,
+    };
 
-  Recorrido.findByIdAndUpdate(
-    id,
-    cambioEstadoRecorrido,
-    { new: true },
-    (err, recorridoDB) => {
-      if (err) {
-        return res.status(400).json({
-          ok: false,
-          err,
+    Recorrido.findByIdAndUpdate(
+      id,
+      cambioEstadoRecorrido,
+      { new: true },
+      (err, recorridoDB) => {
+        if (err) {
+          return res.status(400).json({
+            ok: false,
+            err,
+          });
+        }
+
+        if (!recorridoDB) {
+          return res.status(400).json({
+            ok: false,
+            err: {
+              message: 'Recorrido no encontrado',
+            },
+          });
+        }
+
+        res.json({
+          ok: true,
+          recorrido: recorridoDB,
         });
       }
-
-      if (!recorridoDB) {
-        return res.status(400).json({
-          ok: false,
-          err: {
-            message: 'Recorrido no encontrado',
-          },
-        });
-      }
-
-      res.json({
-        ok: true,
-        recorrido: recorridoDB,
-      });
-    }
-  );
-});
+    );
+  }
+);
 
 /**
  * ==============================
@@ -249,7 +257,7 @@ app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
  */
 
 app.delete(
-  '/recorridoremove/:id',
+  '/api/recorrido/recorridoremove/:id',
   [verificaToken, verificaAdminRole],
   (req, res) => {
     let id = req.params.id;

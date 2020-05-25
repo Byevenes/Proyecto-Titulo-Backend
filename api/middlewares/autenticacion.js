@@ -55,9 +55,9 @@ let verificaAdminRole = (req, res, next) => {
 };
 
 /**
- * =====================
- *   Verificar vip_role
- * =====================
+ * ========================
+ *   Verificar chofer_role
+ * ========================
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -78,8 +78,33 @@ let verificaChoferRole = (req, res, next) => {
   }
 };
 
+/**
+ * ======================================
+ *   Verificar administradorochofer_role
+ * ======================================
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+
+let verificaAdminOrChoferRole = (req, res, next) => {
+  let usuario = req.usuario;
+
+  if (usuario.role === 'ADMIN_ROLE' || 'CHOFER_ROLE') {
+    next();
+  } else {
+    res.json({
+      ok: false,
+      err: {
+        message: 'El usuario no es ni Administrador ni Chofer',
+      },
+    });
+  }
+};
+
 module.exports = {
   verificaToken,
   verificaAdminRole,
   verificaChoferRole,
+  verificaAdminOrChoferRole,
 };

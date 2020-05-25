@@ -19,7 +19,7 @@ const Usuario = require('../models/Usuario');
  * ============================
  */
 
-app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
+app.get('/api/usuario', [verificaToken, verificaAdminRole], (req, res) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
@@ -53,7 +53,7 @@ app.get('/', [verificaToken, verificaAdminRole], (req, res) => {
  * ============================
  */
 
-app.get('/:id', verificaToken, (req, res) => {
+app.get('/api/usuario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Usuario.findOne({ _id: id }, (err, usuarioDB) => {
@@ -88,7 +88,7 @@ app.get('/:id', verificaToken, (req, res) => {
  * ==================================
  */
 
-app.post('/', (req, res) => {
+app.post('/api/usuario', (req, res) => {
   let body = req.body;
 
   let usuario = new Usuario({
@@ -119,7 +119,7 @@ app.post('/', (req, res) => {
  * ============================
  */
 
-app.put('/:id', verificaToken, (req, res) => {
+app.put('/api/usuario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado']);
 
@@ -150,39 +150,43 @@ app.put('/:id', verificaToken, (req, res) => {
  * ============================================
  */
 
-app.delete('/:id', [verificaToken, verificaAdminRole], (req, res) => {
-  let id = req.params.id;
-  let cambioEstado = {
-    estado: false,
-  };
+app.delete(
+  '/api/usuario/:id',
+  [verificaToken, verificaAdminRole],
+  (req, res) => {
+    let id = req.params.id;
+    let cambioEstado = {
+      estado: false,
+    };
 
-  Usuario.findByIdAndUpdate(
-    id,
-    cambioEstado,
-    { new: true },
-    (err, usuarioDB) => {
-      if (err) {
-        return res.status(400).json({
-          ok: false,
-          err,
+    Usuario.findByIdAndUpdate(
+      id,
+      cambioEstado,
+      { new: true },
+      (err, usuarioDB) => {
+        if (err) {
+          return res.status(400).json({
+            ok: false,
+            err,
+          });
+        }
+
+        if (!usuarioDB) {
+          return res.status(400).json({
+            ok: false,
+            err: {
+              message: 'Usuario no encontrado',
+            },
+          });
+        }
+
+        res.json({
+          ok: true,
+          usuario: usuarioDB,
         });
       }
-
-      if (!usuarioDB) {
-        return res.status(400).json({
-          ok: false,
-          err: {
-            message: 'Usuario no encontrado',
-          },
-        });
-      }
-
-      res.json({
-        ok: true,
-        usuario: usuarioDB,
-      });
-    }
-  );
-});
+    );
+  }
+);
 
 module.exports = app;
