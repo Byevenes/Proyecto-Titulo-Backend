@@ -10,7 +10,7 @@ app.use(require('./comentario'));
 app.use(require('./comuna'));
 app.use(require('./login'));
 app.use(require('./poblacion'));
-app.use(require('./puntochofer'));
+app.use(require('./puntoChofer'));
 app.use(require('./recorrido'));
 app.use(require('./region'));
 app.use(require('./usuario'));
