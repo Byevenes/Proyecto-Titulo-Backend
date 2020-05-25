@@ -26,6 +26,25 @@ let polygonSchema = new Schema({
 });
 
 /**
+ * Modelo del punto para la utilización del modelo del recorridoSchema.
+ *
+ * En este modelo se piden 2 cosas
+ * 1.- Un valor por default Point para señalar de que tipo de String es.
+ * 2.- la coordinates que sera un array de numero que sera necesario.
+ */
+
+let pointSchema = new Schema({
+  type: {
+    type: String,
+    default: 'Point',
+  },
+  coordinates: {
+    type: [Number],
+    required: true,
+  },
+});
+
+/**
  * Modelo recorridoSchema para la utilización de marcacar un polygono de puntos con respecto al recorrido
  *
  * En este modelo se pieden 7 cosas
@@ -59,6 +78,14 @@ let recoridoSchema = new Schema({
   location_recorrido: {
     type: polygonSchema,
     required: [true, 'El poligono de puntos es necesario'],
+  },
+  location_recorrido_punto_entrada: {
+    type: pointSchema,
+    required: [true, 'El punto de entrada es necesario'],
+  },
+  location_recorrido_punto_salida: {
+    type: pointSchema,
+    required: [true, 'El punto de salida es necesario'],
   },
   date_recorrido_iniciado: {
     type: String,

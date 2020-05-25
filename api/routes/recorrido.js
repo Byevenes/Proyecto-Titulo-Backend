@@ -126,6 +126,8 @@ app.post('/api/recorrido', [verificaToken, verificaAdminRole], (req, res) => {
     descripcion_recorrido: body.descripcion_recorrido,
     estado_recorrido: body.estado_recorrido,
     location_recorrido: body.location_recorrido,
+    location_recorrido_punto_entrada: body.location_recorrido_punto_entrada,
+    location_recorrido_punto_salida: body.location_recorrido_punto_salida,
     date_recorrido_iniciado: body.date_recorrido_iniciado,
     date_recorrido_finalizado: body.date_recorrido_finalizado,
   });
@@ -168,6 +170,8 @@ app.put(
       'descripcion_recorrido',
       'estado_recorrido',
       'location_recorrido',
+      'location_recorrido_punto_entrada',
+      'location_recorrido_punto_salida',
       'date_recorrido_iniciado',
       'date_recorrido_finalizado',
     ]);
