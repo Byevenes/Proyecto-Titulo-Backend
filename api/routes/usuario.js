@@ -98,6 +98,13 @@ app.post('/api/usuario', (req, res) => {
     role: body.role, // en consideración todavia si no colocarlo
   });
 
+  if (body.password !== body.password2) {
+    return res.status(400).json({
+      ok: false,
+      err: { message: 'Las constraseñas ingresadas no son iguales' },
+    });
+  }
+
   usuario.save((err, usuarioDB) => {
     if (err) {
       return res.status(400).json({
@@ -121,7 +128,19 @@ app.post('/api/usuario', (req, res) => {
 
 app.put('/api/usuario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
-  let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado']);
+  let body = _.pick(req.body, [
+    'nombre',
+    'email',
+    'role',
+    'estado',
+    'password',
+  ]);
+
+  if (body.password !== '') {
+    body.password = bcrypt.hashSync(body.password, 10);
+  } else {
+    delete body.password;
+  }
 
   Usuario.findByIdAndUpdate(
     id,
