@@ -116,12 +116,12 @@ app.get(
           });
         }
 
-        PuntoChofer.countDocuments((err, conteo) => {
-          res.json({
-            ok: true,
-            puntoChofer: puntoChoferDB,
-            cuantos: conteo,
-          });
+        let conteo = puntoChoferDB.length;
+
+        res.json({
+          ok: true,
+          puntoChofer: puntoChoferDB,
+          cuantos: conteo,
         });
       });
   }

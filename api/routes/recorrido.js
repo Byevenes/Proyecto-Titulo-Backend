@@ -101,12 +101,12 @@ app.get('/api/recorrido/:id', verificaToken, (req, res) => {
         });
       }
 
-      Recorrido.countDocuments((err, conteo) => {
-        res.json({
-          ok: true,
-          recorrido: recorridoDB,
-          cuantos: conteo,
-        });
+      let conteo = recorridoDB.length;
+
+      res.json({
+        ok: true,
+        recorrido: recorridoDB,
+        cuantos: conteo,
       });
     });
 });

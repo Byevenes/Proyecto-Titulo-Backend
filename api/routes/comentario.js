@@ -99,12 +99,12 @@ app.get('/api/comentario/:id', verificaToken, (req, res) => {
         });
       }
 
-      Comentario.countDocuments((err, conteo) => {
-        res.json({
-          ok: true,
-          comentario: comentarioDB,
-          cuantos: conteo,
-        });
+      let conteo = comentarioDB.length;
+
+      res.json({
+        ok: true,
+        comentario: comentarioDB,
+        cuantos: conteo,
       });
     });
 });
@@ -146,12 +146,12 @@ app.get(
           });
         }
 
-        Comentario.countDocuments((err, conteo) => {
-          res.json({
-            ok: true,
-            comentario: comentarioDB,
-            cuantos: conteo,
-          });
+        let conteo = comentarioDB.length;
+
+        res.json({
+          ok: true,
+          comentario: comentarioDB,
+          cuantos: conteo,
         });
       });
   }
