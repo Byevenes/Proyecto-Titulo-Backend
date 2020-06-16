@@ -128,24 +128,12 @@ app.post('/api/usuario', (req, res) => {
 
 app.put('/api/usuario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
-  let body = _.pick(req.body, [
-    'nombre',
-    'email',
-    'role',
-    'estado',
-    'password',
-  ]);
-
-  if (body.password !== '') {
-    body.password = bcrypt.hashSync(body.password, 10);
-  } else {
-    delete body.password;
-  }
+  let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado']);
 
   Usuario.findByIdAndUpdate(
     id,
     body,
-    { new: true, runValidators: true, context: 'query' },
+    { new: true, runValidators: true },
     (err, usuarioDB) => {
       if (err) {
         return res.status(400).json({
