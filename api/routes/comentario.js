@@ -18,7 +18,7 @@ let Comentario = require('../models/Comentario');
 
 app.get('/api/comentario', verificaToken, (req, res) => {
   Comentario.find({})
-    .sort({ date_comentario: 'desc' })
+    .sort({ date_comentario: 'asc' })
     .populate('creator', 'email')
     .populate('recorrido', 'name_recorrido')
     .exec((err, comentarios) => {
@@ -80,7 +80,7 @@ app.get('/api/comentario/:id', verificaToken, (req, res) => {
   let id = req.params.id;
 
   Comentario.find({ creator: id })
-    .sort({ date_comentario: 'desc' })
+    .sort({ date_comentario: 'asc' })
     .populate('creator', 'email')
     .exec((err, comentarioDB) => {
       if (err) {
@@ -123,7 +123,7 @@ app.get(
     let id = req.params.id;
 
     Comentario.find({ recorrido: id })
-      .sort({ date_comentario: 'desc' })
+      .sort({ date_comentario: 'asc' })
       .populate(
         'recorrido',
         'name_recorrido descripcion_recorrido estado_recorrido date_recorrido_iniciado date_recorrido_finalizado'

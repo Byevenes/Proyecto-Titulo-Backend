@@ -18,17 +18,9 @@ let PuntoChofer = require('../models/PuntoChofer');
  */
 
 app.get('/api/puntochofer', [verificaToken, verificaAdminRole], (req, res) => {
-  let desde = req.query.desde || 0;
-  desde = Number(desde);
-
-  let limite = req.query.limite || 10;
-  limite = Number(limite);
-
   PuntoChofer.find({})
-    .sort({ date_chofer: 'desc' })
+    .sort({ date_chofer: 'asc' })
     .populate('chofer', 'nombre email role')
-    .skip(desde)
-    .limit(limite)
     .exec((err, puntoChoferes) => {
       if (err) {
         return res.status(400).json({
@@ -97,7 +89,7 @@ app.get(
     let id = req.params.id;
 
     PuntoChofer.find({ chofer: id })
-      .sort({ date_chofer: 'desc' })
+      .sort({ date_chofer: 'asc' })
       .populate('chofer', 'nombre, email, role')
       .exec((err, puntoChoferDB) => {
         if (err) {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-const moment = require('moment');
+//const moment = require('moment');
+const moment = require('moment-timezone');
 
 let Schema = mongoose.Schema;
 
@@ -41,7 +42,8 @@ let puntoChoferSchema = new Schema({
   },
   date_chofer: {
     type: String,
-    default: () => moment().format('DD-MM-YYYY, h:mm:ss a'),
+    default: () =>
+      moment().tz('America/Santiago').format('DD-MM-YYYY, h:mm:ss a'),
   },
   location: {
     type: pointSchema,

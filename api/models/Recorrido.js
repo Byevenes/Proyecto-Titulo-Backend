@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-const moment = require('moment');
+//const moment = require('moment');
+const moment = require('moment-timezone');
 
 moment.locale('es');
 
@@ -91,12 +92,12 @@ let recoridoSchema = new Schema({
   },
   date_recorrido_iniciado: {
     type: String,
-    default: () => moment().format('dddd, h:mm:ss a'),
+    default: () => moment().tz('America/Santiago').format('dddd, h:mm:ss a'),
     required: [true, 'El horario de inicio es necesario'],
   },
   date_recorrido_finalizado: {
     type: String,
-    default: () => moment().format('dddd, h:mm:ss a'),
+    default: () => moment().tz('America/Santiago').format('dddd, h:mm:ss a'),
     required: [true, 'El horario de termino es necesario'],
   },
 });
