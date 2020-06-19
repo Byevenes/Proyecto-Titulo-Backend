@@ -1,5 +1,5 @@
 const express = require('express');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const {
   verificaToken,
@@ -174,7 +174,9 @@ app.put(
 
     let locationPuntoChofer = {
       location: body.location,
-      date_chofer: moment().format('DD-MM-YYYY, h:mm:ss a'),
+      date_chofer: moment()
+        .tz('America/Santiago')
+        .format('DD-MM-YYYY, h:mm:ss a'),
     };
 
     PuntoChofer.findByIdAndUpdate(

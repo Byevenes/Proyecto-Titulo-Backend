@@ -1,5 +1,5 @@
 const express = require('express');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const {
   verificaToken,
@@ -128,7 +128,7 @@ app.get(
         'recorrido',
         'name_recorrido descripcion_recorrido estado_recorrido date_recorrido_iniciado date_recorrido_finalizado'
       )
-      .populate('poblacion', 'name_poblacion')
+      .populate('creator', 'email nombre')
       .exec((err, comentarioDB) => {
         if (err) {
           return res.status(500).json({
@@ -206,7 +206,9 @@ app.put('/api/comentario/:id', verificaToken, (req, res) => {
 
   let descriptionComentario = {
     description_comentario: body.description_comentario,
-    date_comentario: moment().format('DD-MM-YYYY, h:mm:ss a'),
+    date_comentario: moment()
+      .tz('America/Santiago')
+      .format('DD-MM-YYYY, h:mm:ss a'),
   };
 
   Comentario.findByIdAndUpdate(
