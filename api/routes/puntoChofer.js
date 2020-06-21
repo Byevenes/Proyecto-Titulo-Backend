@@ -19,7 +19,7 @@ let PuntoChofer = require('../models/PuntoChofer');
 
 app.get('/api/puntochofer', [verificaToken, verificaAdminRole], (req, res) => {
   PuntoChofer.find({})
-    .sort({ date_chofer: 'asc' })
+    .sort({ date_chofer: 'desc' })
     .populate('chofer', 'nombre email role')
     .exec((err, puntoChoferes) => {
       if (err) {
@@ -89,7 +89,7 @@ app.get(
     let id = req.params.id;
 
     PuntoChofer.find({ chofer: id })
-      .sort({ date_chofer: 'asc' })
+      .sort({ date_chofer: 'desc' })
       .populate('chofer', 'nombre, email, role')
       .exec((err, puntoChoferDB) => {
         if (err) {
