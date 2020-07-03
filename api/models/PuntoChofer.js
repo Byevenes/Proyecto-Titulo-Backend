@@ -11,7 +11,7 @@ let Schema = mongoose.Schema;
  * En este modelo se piden 2 cosas
  * 1.- Un valor por default Point para señalar de que tipo de String es.
  * 2.- la coordinates que sera un array de numero que sera necesario.
- */
+ 
 
 let pointSchema = new Schema({
   type: {
@@ -23,7 +23,7 @@ let pointSchema = new Schema({
     required: true,
   },
 });
-
+*/
 /**
  * Modelo puntoChoferSchema para la utilización de marcar el punto de dejada de basura
  * en el punto del vertedero.
@@ -46,7 +46,7 @@ let puntoChoferSchema = new Schema({
       moment().tz('America/Santiago').format('DD-MM-YYYY, h:mm:ss a'),
   },
   location: {
-    type: pointSchema,
+    type: Object,
     required: [true, 'El punto del chofer es necesario'],
   },
 });

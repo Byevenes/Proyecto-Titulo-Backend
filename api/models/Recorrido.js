@@ -13,7 +13,7 @@ let Schema = mongoose.Schema;
  * En este modelo se piden 2 cosas
  * 1.- Un valor por default Polygon para señalar de que tipo de String es.
  * 2.- la coordinates que sera un triple array de numeros para tener un conjunto de puntos.
- */
+ 
 
 let polygonSchema = new Schema({
   type: {
@@ -25,6 +25,7 @@ let polygonSchema = new Schema({
     required: true,
   },
 });
+*/
 
 /**
  * Modelo del punto para la utilización del modelo del recorridoSchema.
@@ -32,7 +33,7 @@ let polygonSchema = new Schema({
  * En este modelo se piden 2 cosas
  * 1.- Un valor por default Point para señalar de que tipo de String es.
  * 2.- la coordinates que sera un array de numero que sera necesario.
- */
+ 
 
 let pointSchema = new Schema({
   type: {
@@ -44,7 +45,7 @@ let pointSchema = new Schema({
     required: true,
   },
 });
-
+*/
 /**
  * Modelo recorridoSchema para la utilización de marcacar un polygono de puntos con respecto al recorrido
  *
@@ -79,15 +80,15 @@ let recoridoSchema = new Schema({
     default: true,
   },
   location_recorrido: {
-    type: polygonSchema,
+    type: Object,
     required: [true, 'El poligono de puntos es necesario'],
   },
   location_recorrido_punto_entrada: {
-    type: pointSchema,
+    type: Object,
     required: [true, 'El punto de entrada es necesario'],
   },
   location_recorrido_punto_salida: {
-    type: pointSchema,
+    type: Object,
     required: [true, 'El punto de salida es necesario'],
   },
   date_recorrido_iniciado: {
