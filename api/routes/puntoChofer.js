@@ -46,7 +46,7 @@ app.get("/api/puntochofer", [verificaToken, verificaAdminRole], (req, res) => {
 
 app.get(
   "/api/puntochofer/puntochoferid/:id",
-  [verificaToken, verificaAdminRole],
+  [verificaToken, verificaAdminOrChoferRole],
   (req, res) => {
     let id = req.params.id;
 
@@ -217,7 +217,7 @@ app.put(
 
 app.delete(
   "/api/puntochofer/:id",
-  [verificaToken, verificaAdminRole],
+  [verificaToken, verificaAdminOrChoferRole],
   (req, res) => {
     let id = req.params.id;
 
