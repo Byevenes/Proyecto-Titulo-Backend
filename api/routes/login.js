@@ -1,10 +1,10 @@
-require('../config/config');
+require("../config/config");
 
-const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const Usuario = require('../models/Usuario');
+const Usuario = require("../models/Usuario");
 const app = express();
 
 /**
@@ -17,7 +17,7 @@ const app = express();
  * =====================================
  */
 
-app.post('/api/login', (req, res) => {
+app.post("/api/login", (req, res) => {
   let body = req.body;
 
   Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
@@ -32,7 +32,7 @@ app.post('/api/login', (req, res) => {
       return res.status(400).json({
         ok: false,
         err: {
-          message: '(Usuario) o contraseña incorrectos',
+          message: "Usuario o contraseña incorrectos",
         },
       });
     }
@@ -41,7 +41,7 @@ app.post('/api/login', (req, res) => {
       return res.status(400).json({
         ok: false,
         err: {
-          message: 'Usuario o (contraseña) incorrectos',
+          message: "Usuario o contraseña incorrectos",
         },
       });
     }
